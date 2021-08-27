@@ -29,7 +29,7 @@ void DoorControl::run()
 	// example:
 
 	std::string msg;		// temporary variable to construct message
-	unsigned max_count = 1000;	// loop this often
+	//unsigned max_count = 1000;	// loop this often
 	unsigned delay_ms = 20;		// Milliseconds to wait on one loop
 	
 	while(!door_if.quit_doorcontrol_flag){
