@@ -9,12 +9,11 @@
 
 #include "DoorInterface.h"
 #include "DoorControl.h"
+#include "CSV.hpp"
 
-
-DoorControl::DoorControl() : door_if(false, true)
+DoorControl::DoorControl() : door_if(DoorInterface::get_instance())
 {
-	// constructor
-	// ... maybe, insert your sensor and actor initialization here?
+	CSV csv = CSV("config.csv");
 }
 
 DoorControl::~DoorControl()
@@ -25,22 +24,7 @@ DoorControl::~DoorControl()
 
 void DoorControl::run()
 {
-	// ... insert your main loop here ...
-	// example:
-
-	std::string msg;		// temporary variable to construct message
-	//unsigned max_count = 1000;	// loop this often
-	unsigned delay_ms = 20;		// Milliseconds to wait on one loop
-	
 	while(!door_if.quit_doorcontrol_flag){
-
-		//construct counter message
-		msg = "press 'q' to quit";
-
-		// set current message to be displayed by user interface
-		door_if.DebugString(msg);
-
-		// wait some time
-		usleep(delay_ms * 1000);
+		usleep(20 * 1000);
 	}
 }

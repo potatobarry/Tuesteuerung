@@ -31,19 +31,15 @@ class DoorInterface{
 	 */
 	static std::atomic<bool> quit_doorcontrol_flag;
 
+	static DoorInterface& get_instance() {
+		static DoorInterface _instance;
+		return _instance;
+	}
+
 	// Wissenswertes über statische Member und Methoden:
 	// https://www.learncpp.com/cpp-tutorial/static-member-functions/
 
-	/*
-	 * Konstruktor des Interface zur Hardware / Simulation
-	 * real_door: legt fest ob auf die Hardware zugegriffen werden soll
-	 * show_ui:   legt fest, ob die Ein-/Ausgabe ueber ncurses genutzt wird
-	 * wirft Exception `std::runtime_error` im Fehlerfall
-	 *
-	 * wenn "show_ui" wahr ist, dann nutze zum Starten des Programms in Eclipse:
-	 * "External Tools" -> run in xterm"
-	 */
-	DoorInterface(bool real_door=false, bool show_ui=true);
+
 	
 	/* Destruktor */
 	~DoorInterface(void);
@@ -71,22 +67,35 @@ class DoorInterface{
 	void DebugString(const std::string s);
 
     private:
-	const bool real_door;
-	const bool show_ui;
+		/*
+		 * Konstruktor des Interface zur Hardware / Simulation
+		 * real_door: legt fest ob auf die Hardware zugegriffen werden soll
+		 * show_ui:   legt fest, ob die Ein-/Ausgabe ueber ncurses genutzt wird
+		 * wirft Exception `std::runtime_error` im Fehlerfall
+		 *
+		 * wenn "show_ui" wahr ist, dann nutze zum Starten des Programms in Eclipse:
+		 * "External Tools" -> run in xterm"
+		 */
+		DoorInterface(bool real_door = false, bool show_ui = true);
+		DoorInterface(const DoorInterface&);
+		DoorInterface& operator = (const DoorInterface&);
+
+		const bool real_door;
+		const bool show_ui;
 	
-	std::thread ui_thread;
-	char debug_string[100];
+		std::thread ui_thread;
+		char debug_string[100];
 	
-	struct usb_device *dev;
-	struct usb_dev_handle *handle;
+		struct usb_device *dev;
+		struct usb_dev_handle *handle;
 	
-	int channels;
-	int sim_channels;
+		int channels;
+		int sim_channels;
 	
-	void HandleSimUI(void);
-	void InitNcurses(void);
-	void ShowSimUI(void);
-	void HandleSimInput(int c);
+		void HandleSimUI(void);
+		void InitNcurses(void);
+		void ShowSimUI(void);
+		void HandleSimInput(int c);
 };
 
 #endif // DOOR_INTERFACE_HH

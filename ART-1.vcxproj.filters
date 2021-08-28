@@ -27,6 +27,9 @@
     <ClCompile Include="library\niusb6501.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CSV.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DoorControl.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="library\niusb6501.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CSV.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

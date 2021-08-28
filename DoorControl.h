@@ -22,7 +22,8 @@ public:
 	
 	void run();
 private:
-	DoorInterface door_if;
+	DoorInterface& door_if;
+	void readConfig();
 };
 
 

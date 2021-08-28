@@ -64,19 +64,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <NMakePreprocessorDefinitions>WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <ExternalIncludePath>D:\Users\Quinn\Documents\Studium\Mikrorechentechnik\ART-1\ncurses;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <ExternalIncludePath>D:\Users\Quinn\Documents\Studium\Mikrorechentechnik\ART-1\ncurses;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CSV.cpp" />
     <ClCompile Include="DoorControl.cpp" />
     <ClCompile Include="DoorInterface.cpp" />
     <ClCompile Include="library\niusb6501.c" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CSV.hpp" />
     <ClInclude Include="DoorControl.h" />
     <ClInclude Include="DoorInterface.h" />
     <ClInclude Include="library\niusb6501.h" />
