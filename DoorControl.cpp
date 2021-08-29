@@ -13,7 +13,7 @@
 
 DoorControl::DoorControl() : door_if(DoorInterface::get_instance())
 {
-
+	//Hallo Lukas
 }
 
 DoorControl::~DoorControl()
