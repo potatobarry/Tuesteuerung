@@ -34,18 +34,18 @@ void CSV::read_file() {
 	while (std::getline(stream, line)) {
 		std::vector<std::string> data;
 
-		if (line.rfind("#", 0) == 0)		// if first symbold is # ignores line. TODO: any other unexpected line causes segfault! Please fix! 
+		if (line.rfind("#", 0) == 0)		// if first symbold is # ignores line. TODO: any other unexpected line causes segfault! Please fix!
 			continue;						
 		else
 			data = parse_line(line);	//sends current line to parse_line()
 				
-		Device dev;
+		Device dev;	//struct with properties of device
 		dev.port = std::stoi(data[1]);
 		dev.pin = std::stoi(data[2]);
 		dev.type = data[3];
 		dev.active_state = std::stoi(data[4]);
 
-		devices[data[0]] = dev;
+		devices[data[0]] = dev;	//fills devices map with key = name of sensor/actor and its properties
 	}
 }
 
