@@ -74,6 +74,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CSV.cpp" />
+    <ClCompile Include="Device.cpp" />
     <ClCompile Include="DoorControl.cpp" />
     <ClCompile Include="DoorInterface.cpp" />
     <ClCompile Include="library\niusb6501.c" />
@@ -81,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CSV.hpp" />
+    <ClInclude Include="Device.hpp" />
     <ClInclude Include="DoorControl.h" />
     <ClInclude Include="DoorInterface.h" />
     <ClInclude Include="library\niusb6501.h" />

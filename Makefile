@@ -28,13 +28,16 @@ CC_FILES = \
 	DoorInterface.cpp \
 	DoorControl.cpp \
 	CSV.cpp \
-	main.cpp
+	Device.cpp \
+	main.cpp 
+
 
 # in diese Variable gehören alle zu kompilierenden C++-Header-Dateien
 HH_FILES = \
 	DoorInterface.h \
 	CSV.hpp \
-	DoorControl.h
+	DoorControl.h \
+	Device.hpp
 
 # in diese Variable gehören alle zu kompilierenden C-Quellcode-Dateien
 C_FILES = \

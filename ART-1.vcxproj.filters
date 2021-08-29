@@ -30,6 +30,9 @@
     <ClCompile Include="CSV.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Device.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DoorControl.h">
@@ -42,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CSV.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Device.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

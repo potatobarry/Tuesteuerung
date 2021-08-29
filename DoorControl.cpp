@@ -12,7 +12,9 @@
 
 
 DoorControl::DoorControl() : door_if(DoorInterface::get_instance())
-{}
+{
+
+}
 
 DoorControl::~DoorControl()
 {

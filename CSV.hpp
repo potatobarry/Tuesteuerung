@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-struct Device {
+struct Config {
 	int port;
 	int pin;
 	std::string type;
@@ -14,10 +14,10 @@ struct Device {
 class CSV
 {
 	std::string path;
-	std::map<std::string, Device> devices;
+	std::map<std::string, Config> devices;
 	std::vector<std::string> parse_line(std::string);
 	void read_file();
 	public:
 		CSV(std::string path);
-		std::map<std::string, Device> get_devices();
+		std::map<std::string, Config> get_devices();
 };

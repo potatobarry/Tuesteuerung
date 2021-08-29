@@ -39,7 +39,7 @@ void CSV::read_file() {
 		else
 			data = parse_line(line);	//sends current line to parse_line()
 				
-		Device dev;	//struct with properties of device
+		Config dev;	//struct with properties of device
 		dev.port = std::stoi(data[1]);
 		dev.pin = std::stoi(data[2]);
 		dev.type = data[3];
@@ -49,6 +49,6 @@ void CSV::read_file() {
 	}
 }
 
-std::map<std::string, Device> CSV::get_devices() { 
+std::map<std::string, Config> CSV::get_devices() { 
 	return devices;
 }
