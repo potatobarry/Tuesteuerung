@@ -9,12 +9,10 @@
 
 #include "DoorInterface.h"
 #include "DoorControl.h"
-#include "CSV.hpp"
+
 
 DoorControl::DoorControl() : door_if(DoorInterface::get_instance())
-{
-	CSV csv = CSV("config.csv");
-}
+{}
 
 DoorControl::~DoorControl()
 {

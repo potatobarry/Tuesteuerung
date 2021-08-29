@@ -104,7 +104,7 @@ void DoorInterface::DebugString(const std::string s)
 
 	std::ofstream logfile;
 	logfile.open ("interface.log", std::ios::out | std::ios::app);
-	logfile << s << std::endl;
+	logfile << s << std::endl;		//writes s into new line
 	logfile.close();
 
 }
