@@ -1,1 +1,1 @@
-main.o: main.cpp DoorControl.h DoorInterface.h CSV.hpp
+main.o: main.cpp DoorControl.h DoorInterface.h Device.hpp CSV.hpp

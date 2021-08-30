@@ -9,11 +9,13 @@
 
 #include "DoorInterface.h"
 #include "DoorControl.h"
+#include "Device.hpp"
+
 
 
 DoorControl::DoorControl() : door_if(DoorInterface::get_instance())
 {
-	//Hallo Lukas
+	Device dev;		
 }
 
 DoorControl::~DoorControl()
@@ -26,5 +28,8 @@ void DoorControl::run()
 {
 	while(!door_if.quit_doorcontrol_flag){
 		usleep(20 * 1000);
+
+		DoorInterface& door = DoorInterface::get_instance();
+		door.DebugString("Status BW1: " + std::to_string(dev.get_status("BW1")) + "\n");
 	}
 }

@@ -13,17 +13,18 @@
 
 #include "ncurses.h"
 #include "DoorInterface.h"
+#include "Device.hpp"
 
 
 class DoorControl {
+	Device dev;
 public:
 	DoorControl();
 	~DoorControl();
 	
 	void run();
-private:
+private:	
 	DoorInterface& door_if;
-	void readConfig();
 };
 
 
