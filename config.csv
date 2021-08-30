@@ -1,6 +1,6 @@
 # name, port, pin, type, active state, // last comma neccessary or program segfaults.
 # empty lines must have "#" or program segfaults.
-BW1,0,0,sensor,0,
+BW1,0,0,sensor,1,
 BW2,0,1,sensor,1,
 NTA,0,2,sensor,1,
 NTZ,0,3,sensor,1,

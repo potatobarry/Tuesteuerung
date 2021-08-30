@@ -8,20 +8,20 @@ Device::Device()
 	device = csv.get_devices();
 }
 
-int Device::get_status(std::string sensor) //should work? PLEASE TEST
+bool Device::get_status(std::string sensor) //should work? PLEASE TEST
 {
 	DoorInterface& door = DoorInterface::get_instance();
 	
 	unsigned int port = device[sensor].port;
 	unsigned char pin;
-	int status;
+	bool status;
 	door.DIO_Read(port, &pin);
 	
 	if (device[sensor].active_state) {
 		status = (pin >> device[sensor].pin) & 1;
 	}
 	else {
-		status = (pin >> device[sensor].pin) & 0;	//THIS DOES NOT WORK! ALWAYS OUTPUTS 0
+		status = !((pin >> device[sensor].pin) & 1);	//THIS DOES NOT WORK! ALWAYS OUTPUTS 0
 	}
 		
 	return status;
