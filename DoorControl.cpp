@@ -115,7 +115,7 @@ void DoorControl::run()
 	}
 	
 
-	while (!door_if.quit_doorcontrol_flag)
+	while (!door_if.quit_doorcontrol_flag) //all operation modes must be called in this while loop. 
 	{
 		usleep(20 * 1000);
 
