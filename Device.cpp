@@ -8,7 +8,7 @@ Device::Device()
 	device = csv.get_devices();
 }
 
-bool Device::get_status(std::string sensor) //should work? PLEASE TEST
+bool Device::get_status(std::string sensor)
 {
 	DoorInterface& door = DoorInterface::get_instance();
 	
