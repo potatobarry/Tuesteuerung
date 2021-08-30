@@ -31,6 +31,7 @@ void DoorControl::run()
 		dev.set_status("Y1", dev.get_status("BW1"));
 		dev.set_status("Y2", dev.get_status("BW2"));
 		dev.set_status("Y3", dev.get_status("NTA"));
+		
 		usleep(20 * 1000);
 
 	}

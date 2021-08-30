@@ -4,6 +4,7 @@
 
 class Device
 {
+	unsigned char actorpins;
 	std::map<std::string, Config> device;
 	
 public: 
