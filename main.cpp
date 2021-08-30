@@ -9,7 +9,7 @@ int main (int argc, char *argv[])
 {
 	//CSV csv = CSV("config.csv");
 	//auto devices = csv.get_devices();
-	DoorInterface& door = DoorInterface::get_instance(); //makes pointer to singleton object door
+	//DoorInterface& door = DoorInterface::get_instance(); //makes pointer to singleton object door
 
 	//for (auto it : devices)
 	//{

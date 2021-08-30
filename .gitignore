@@ -54,6 +54,12 @@ nunit-*.xml
 [Dd]ebugPS/
 [Rr]eleasePS/
 dlldata.c
+*.o
+./Tuersteuerung
+
+#Eclipse profiles
+*.cproject
+*.project
 
 # Benchmark Results
 BenchmarkDotNet.Artifacts/
@@ -97,6 +103,9 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
+*.vcxproj
+*.sln
+*.vcxproj.*
 
 # Chutzpah Test files
 _Chutzpah*

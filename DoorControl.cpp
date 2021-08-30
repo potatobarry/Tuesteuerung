@@ -27,9 +27,11 @@ DoorControl::~DoorControl()
 void DoorControl::run()
 {
 	while(!door_if.quit_doorcontrol_flag){
+	
+		dev.set_status("Y1", dev.get_status("BW1"));
+		dev.set_status("Y2", dev.get_status("BW2"));
+		dev.set_status("Y3", dev.get_status("NTA"));
 		usleep(20 * 1000);
 
-		DoorInterface& door = DoorInterface::get_instance();
-		door.DebugString("Status BW1: " + std::to_string(dev.get_status("BW1")) + "\n");
 	}
 }
