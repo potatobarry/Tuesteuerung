@@ -11,7 +11,7 @@ class Device
 	
 public: 
 	Device();
-	int get_status(std::string sensor);
+	bool get_status(std::string sensor);
 	void set_status(std::string actor, int status);
 
 };
