@@ -51,3 +51,28 @@ void Device::set_status(std::string actor, bool status)
 
 	door.DIO_Write(port, actorpins);
 }
+
+void Device::door_open()
+{
+	this->set_status("Y2", 0);
+	this->set_status("Y3", 0);
+	this->set_status("Y1", 1);
+}
+
+void Device::door_close()
+{
+	this->set_status("Y1", 0);
+	this->set_status("Y2", 1);
+	this->set_status("Y3", 1);
+}
+
+void Device::door_stop()
+{
+	this->set_status("Y1", 0);
+	this->set_status("Y2", 0);
+}
+
+void Device::lamp(int status)
+{
+	this->set_status("Y3", status);
+}
