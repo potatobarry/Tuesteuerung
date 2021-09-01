@@ -1,5 +1,5 @@
 /*
- * Praktikum MRT2
+ * Praktikum MRT2 
  * ART1 Türsteuerung
  * Institut für Automatisierungstechnik
  * letztes Update Mai 2018
@@ -73,10 +73,10 @@ void DoorControl::automatik()
 
 		if (dev.get_status("NTA") || dev.get_status("LSH") || dev.get_status("LSV") || dev.get_status("BM")) //Wenn sensor ausgelöst; Lampe an, fahre auf
 		{
-			dev.lamp(1);												  //warnlampe an
+			dev.lamp(1);											  //warnlampe an
 			while (!(dev.get_status("ELO") || dev.get_status("NTZ"))) //fahre auf, bis endstop erreicht oder bis knopf gedrückt
 			{
-				dev.door_open();											   //fahre auf
+				dev.door_open();									   //fahre auf
 				if (!(dev.get_status("BW1") && dev.get_status("BW2"))) //break bedingung moduswechsel
 				{
 					dev.door_stop();
@@ -87,7 +87,7 @@ void DoorControl::automatik()
 			dev.door_stop();
 			while (int i = 0 < 3000) // warte 3 sekunden, überprüfe jede 0,1 sek pb breakbedingungen erfüllt wurden
 			{
-				if ((!dev.get_status("BW1") || !dev.get_status("BW2") || dev.get_status("NTZ")) == true) //break bedingung moduswechsel
+				if ((!dev.get_status("BW1") || !dev.get_status("BW2") || dev.get_status("NTZ"))) //break bedingung moduswechsel
 				{
 					dev.door_stop();
 					dev.lamp(0);
@@ -98,7 +98,7 @@ void DoorControl::automatik()
 			}
 		}
 
-		if ((dev.get_status("NTA") || dev.get_status("LSH") || dev.get_status("LSV") || dev.get_status("BM") || !az) == false) //Fahre zu
+		if (!(dev.get_status("NTA") || dev.get_status("LSH") || dev.get_status("LSV") || dev.get_status("BM") || az)) //Fahre zu
 		{
 			dev.door_close();
 			dev.lamp(1);
