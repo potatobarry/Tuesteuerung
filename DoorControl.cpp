@@ -24,102 +24,165 @@ DoorControl::~DoorControl()
 
 void DoorControl::run()
 {
-	//Automatik Modus
-	int s = 0;				   //Automatik boot variable
-	while (BW1 && BW2 == true) //Automatik Modus
-	{
-		bool AZ = false; //Admin ZU
 
-		if (s < 1)
-		{
-			Y3 = true;
-			waitms(5000); //warte 5 sekunden
-			Y3 = false;
-			s++;
-		}
-
-		if (NTZ == true)
-		{
-			AZ = true;
-		}
-
-		if ((NTA || LSH || LSV || BM) == true) //Wenn sensor ausgelöst; Lampe an, fahre auf
-		{
-			Y3 = true;					  //warnlampe an
-			while ((ELO || NTZ) == false) //fahre auf, bis endstop erreicht oder bis knopf gedrückt
-			{
-				Y1 = true;				 //fahre auf
-				if (BW1 && BW2 == false) //break bedingung moduswechsel
-				{
-					Y1 = false;
-					Y3 = false;
-					break;
-				}
-			}
-			Y1 = false;
-			while (int i = 0 < 3000) // warte 3 sekunden, überprüfe jede 0,1 sek pb breakbedingungen erfüllt wurden
-			{
-				if ((!BW1 || !BW2 || NTZ) == true) //break bedingung moduswechsel
-				{
-					Y1 = false;
-					Y3 = false;
-					break;
-				}
-				waitms(100);
-				i = i + 100;
-			}
-			Y3 = false;
-		}
-
-		if ((NTA || LSH || LSV || BM || !AZ) == false) //Fahre zu
-		{
-			while ((NTA || LSH || LSV || BM || ELG || !BW1 || !BW2)) == false)
-				{
-					Y2 = true;
-					Y3 = true;
-				}
-			Y2 = false;
-			Y3 = false;
-			AZ = false;
-		}
-	}
-
-	//Handbetrieb
-	while (BW1 == true && BW2 == false) //Schleife für handbetrieb
-	{
-		Y1 = false;
-		Y2 = false;
-		Y3 = false;
-		while (NTA == true && NTG == false && !ELO) //Befehl fahre auf (taste auf) und endlage offen nicht erreicht
-		{
-			Y1 = true;
-			Y3 = true;
-			if (BW1 && !BW2 == false) //break bedingung moduswechsel
-			{
-				Y1 = false;
-				Y3 = false;
-				break;
-			}
-		}
-		while (NTA == false && NTG == true && !ELG) //befehl fahre zu (taste zu gedrückt, endlage nicht erreicht)
-		{
-			Y2 = true;
-			Y3 = true;
-			if (BW1 && !BW2 == false) //break bedingung moduswechsel
-			{
-				Y2 = false;
-				Y3 = false;
-				break;
-			}
-		}
-	}
-	
-
-	while (!door_if.quit_doorcontrol_flag) //all operation modes must be called in this while loop. 
+	while (!door_if.quit_doorcontrol_flag) //all operation modes must be called in this while loop.
 	{
 		usleep(20 * 1000);
 
-		DoorInterface &door = DoorInterface::get_instance();
-		door.DebugString("Status BW1: " + std::to_string(dev.get_status("BW1")) + "\n");
+		//	DoorInterface &door = DoorInterface::get_instance();
+		//	door.DebugString("Status BW1: " + std::to_string(dev.get_status("BW1")) + "\n");
+		//Automatik Modus
+
+		this->automatik();
+
+		//Handbetrieb
+		while (dev.get_status("BW1") && !(dev.get_status("BW2"))) //Schleife für handbetrieb
+		{
+			this->handbetrieb();
+		}
+
+		while (!(dev.get_status("BW1")) && dev.get_status("BW2"))
+		{
+			this->reperaturbetrieb();
+		}
+		while (!(dev.get_status("BW1")) && !(dev.get_status("BW2")))
+		{
+			this->ausgeschaltet();
+		}
 	}
 }
+void DoorControl::automatik()
+{
+	int s = 0;													   //Automatik boot variable
+	while (dev.get_status("BW1") && dev.get_status("BW2") == true) //Automatik Modus
+	{
+		bool az = false; //Admin ZU
+
+		if (!s)
+		{
+			dev.lamp(1);
+			usleep(5000 * 1000); //warte 5 sekunden
+			dev.lamp(0);
+			s++;
+		}
+
+		if (dev.get_status("NTZ"))
+		{
+			az = true; //administration zu
+		}
+
+		if (dev.get_status("NTA") || dev.get_status("LSH") || dev.get_status("LSV") || dev.get_status("BM")) //Wenn sensor ausgelöst; Lampe an, fahre auf
+		{
+			dev.lamp(1);												  //warnlampe an
+			while (!(dev.get_status("ELO") || dev.get_status("NTZ"))) //fahre auf, bis endstop erreicht oder bis knopf gedrückt
+			{
+				dev.door_open();											   //fahre auf
+				if (!(dev.get_status("BW1") && dev.get_status("BW2"))) //break bedingung moduswechsel
+				{
+					dev.door_stop();
+					dev.lamp(0);
+					break;
+				}
+			}
+			dev.door_stop();
+			while (int i = 0 < 3000) // warte 3 sekunden, überprüfe jede 0,1 sek pb breakbedingungen erfüllt wurden
+			{
+				if ((!dev.get_status("BW1") || !dev.get_status("BW2") || dev.get_status("NTZ")) == true) //break bedingung moduswechsel
+				{
+					dev.door_stop();
+					dev.lamp(0);
+					break;
+				}
+				usleep(100 * 1000);
+				i = i + 100;
+			}
+		}
+
+		if ((dev.get_status("NTA") || dev.get_status("LSH") || dev.get_status("LSV") || dev.get_status("BM") || !az) == false) //Fahre zu
+		{
+			dev.door_close();
+			dev.lamp(1);
+			while (!(dev.get_status("NTA") || dev.get_status("LSH") || dev.get_status("LSV") || dev.get_status("BM") || dev.get_status("ELG") || !dev.get_status("BW1") || !dev.get_status("BW2")))
+				{
+					usleep(100 * 1000); //warte 100 ms
+				}
+			dev.door_stop();
+			dev.lamp(0);
+			az = false;
+		}
+	}
+}
+
+void DoorControl::handbetrieb()
+{
+	dev.door_stop();
+	dev.door_stop();
+	dev.lamp(0);
+	while (dev.get_status("NTA") == true && dev.get_status("NTG") == false && !dev.get_status("ELO")) //Befehl fahre auf (taste auf) und endlage offen nicht erreicht
+	{
+		dev.door_open();
+		dev.lamp(1);
+		if (dev.get_status("BW1") && !dev.get_status("BW2") == false) //break bedingung moduswechsel
+		{
+			dev.door_stop();
+			dev.lamp(0);
+			break;
+		}
+	}
+	while (dev.get_status("NTA") == false && dev.get_status("NTG") == true && !dev.get_status("ELG")) //befehl fahre zu (taste zu gedrückt, endlage nicht erreicht)
+	{
+		dev.door_close();
+		dev.lamp(1);
+		if (dev.get_status("BW1") && !dev.get_status("BW2") == false) //break bedingung moduswechsel
+		{
+			dev.door_stop();
+			dev.lamp(0);
+			break;
+		}
+	}
+}
+void DoorControl::reperaturbetrieb()
+{
+
+	if (dev.get_status("NTA") || dev.get_status("LSV") || dev.get_status("LSH") || dev.get_status("BM") || !dev.get_status("ELO")) //fahre auf
+	{
+		while (dev.get_status("NTA") || dev.get_status("LSV") || dev.get_status("LSH") || dev.get_status("BM") || !dev.get_status("ELO"))
+		{
+			dev.door_open();
+			dev.lamp(1);
+			if (!dev.get_status("ELO") || dev.get_status("NTZ"))
+			{
+				break;
+			}
+		}
+		dev.door_stop(); //motor stop und licht aus
+
+		while (int i = 0 < 3000) // warte 3 sekunden, überprüfe jede 0,1 sek pb breakbedingungen erfüllt wurden
+		{
+			if (dev.get_status("NTZ") || !(!dev.get_status("BW1") && dev.get_status("BW2"))) //break bedingung moduswechsel
+			{
+				dev.door_stop();
+				dev.lamp(0);
+				break;
+			}
+			usleep(100 * 1000);
+			i = i + 100;
+		}
+	}
+	if (!(dev.get_status("NTA") || dev.get_status("LSV") || dev.get_status("LSH") || dev.get_status("BM") || !dev.get_status("ELG"))) //fahre zu
+	{
+		while (dev.get_status("NTZ"))
+		{
+			dev.door_close();
+			if (dev.get_status("ELG") || !(!dev.get_status("BW1") && dev.get_status("BW2")))
+			{
+				break;
+			}
+		}
+		dev.door_stop();
+	}
+}
+	void DoorControl::ausgeschaltet()
+	{
+		usleep(100 * 1000); //warte 100ms
+	}

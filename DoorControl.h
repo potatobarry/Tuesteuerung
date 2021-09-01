@@ -25,6 +25,10 @@ public:
 	void run();
 private:	
 	DoorInterface& door_if;
+	void automatik();
+	void handbetrieb();
+	void reperaturbetrieb();
+	void ausgeschaltet();
 };
 
 
