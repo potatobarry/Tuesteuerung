@@ -1,6 +1,6 @@
 /*  -*- mode: c++; -*-
 
- * Praktikum MRT2 
+ * Praktikum MRT2
  * ART1 Türsteuerung
  * Institut für Automatisierungstechnik
  * letztes Update Mai 2018
@@ -21,9 +21,9 @@ class DoorControl {
 public:
 	DoorControl();
 	~DoorControl();
-	
+
 	void run();
-private:	
+private:
 	DoorInterface& door_if;
 	void automatik();
 	void handbetrieb();

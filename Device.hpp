@@ -6,8 +6,8 @@ class Device
 {
 	unsigned char actorpins;
 	std::map<std::string, Config> device;
-	
-public: 
+
+public:
 	Device();
 	//get_status function returns bool of current status. Call by inserting case sensitive name of sensor in brackets. Anything not on ports 0 and 1 outputs random numbers. 
 	bool get_status(std::string sensor);

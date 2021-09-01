@@ -1,5 +1,5 @@
 /*
- * Praktikum MRT2 
+ * Praktikum MRT2
  * ART1 Türsteuerung
  * Institut für Automatisierungstechnik
  * letztes Update Mai 2018
@@ -103,9 +103,9 @@ void DoorControl::automatik()
 			dev.door_close();
 			dev.lamp(1);
 			while (!(dev.get_status("NTA") || dev.get_status("LSH") || dev.get_status("LSV") || dev.get_status("BM") || dev.get_status("ELG") || !dev.get_status("BW1") || !dev.get_status("BW2")))
-				{
-					usleep(100 * 1000); //warte 100 ms
-				}
+			{
+				usleep(100 * 1000); //warte 100 ms
+			}
 			dev.door_stop();
 			dev.lamp(0);
 			az = false;
@@ -182,7 +182,7 @@ void DoorControl::reperaturbetrieb()
 		dev.door_stop();
 	}
 }
-	void DoorControl::ausgeschaltet()
-	{
-		usleep(100 * 1000); //warte 100ms
-	}
+void DoorControl::ausgeschaltet()
+{
+	usleep(100 * 1000); //warte 100ms
+}

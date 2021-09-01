@@ -5,7 +5,7 @@
 /* Das Programm in Eclipse mittels des Menüeintrags:
  * "Run -> External Tools" -> run in xterm"
  * starten! */
-int main (int argc, char *argv[])
+int main(int argc, char* argv[])
 {
 	//CSV csv = CSV("config.csv");
 	//auto devices = csv.get_devices();
