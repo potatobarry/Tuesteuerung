@@ -63,7 +63,7 @@ void Device::door_close()
 {
 	this->set_status("Y1", 0);
 	this->set_status("Y2", 1);
-	this->set_status("Y3", 1);
+	//this->set_status("Y3", 1);
 }
 
 void Device::door_stop()

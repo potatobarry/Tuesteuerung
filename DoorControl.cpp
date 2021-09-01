@@ -78,7 +78,6 @@ void DoorControl::automatik()
 			if (!dev.get_status("ELG"))
 			{
 				dev.door_close();
-				dev.lamp(1);
 			}
 
 			while (!(dev.get_status("NTA") || dev.get_status("LSH") || dev.get_status("LSV") || dev.get_status("BM") || dev.get_status("ELG") || !dev.get_status("BW1") || !dev.get_status("BW2")))
