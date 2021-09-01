@@ -1,5 +1,5 @@
 /*
- * Praktikum MRT2 
+ * Praktikum MRT2
  * ART1 Türsteuerung
  * Institut für Automatisierungstechnik
  * letztes Update Mai 2018
@@ -22,35 +22,6 @@ DoorControl::~DoorControl()
 	door_if.quit_doorcontrol_flag = true;
 }
 
-void DoorControl::run()
-{
-
-	while (!door_if.quit_doorcontrol_flag) //all operation modes must be called in this while loop.
-	{
-		usleep(20 * 1000);
-
-		//	DoorInterface &door = DoorInterface::get_instance();
-		//	door.DebugString("Status BW1: " + std::to_string(dev.get_status("BW1")) + "\n");
-		//Automatik Modus
-
-		this->automatik();
-
-		//Handbetrieb
-		while (dev.get_status("BW1") && !(dev.get_status("BW2"))) //Schleife für handbetrieb
-		{
-			this->handbetrieb();
-		}
-
-		while (!(dev.get_status("BW1")) && dev.get_status("BW2"))
-		{
-			this->reperaturbetrieb();
-		}
-		while (!(dev.get_status("BW1")) && !(dev.get_status("BW2")))
-		{
-			this->ausgeschaltet();
-		}
-	}
-}
 void DoorControl::automatik()
 {
 	int s = 0;													   //Automatik boot variable
@@ -141,6 +112,7 @@ void DoorControl::handbetrieb()
 		}
 	}
 }
+
 void DoorControl::reperaturbetrieb()
 {
 
@@ -182,7 +154,38 @@ void DoorControl::reperaturbetrieb()
 		dev.door_stop();
 	}
 }
+
 void DoorControl::ausgeschaltet()
 {
 	usleep(100 * 1000); //warte 100ms
 }
+
+void DoorControl::run()
+{
+	while (!door_if.quit_doorcontrol_flag) //all operation modes must be called in this while loop.
+	{
+		usleep(20 * 1000);
+
+		//	DoorInterface &door = DoorInterface::get_instance();
+		//	door.DebugString("Status BW1: " + std::to_string(dev.get_status("BW1")) + "\n");
+		//Automatik Modus
+
+		automatik();
+
+		//Handbetrieb
+		while (dev.get_status("BW1") && !(dev.get_status("BW2"))) //Schleife für handbetrieb
+		{
+			handbetrieb();
+		}
+
+		while (!(dev.get_status("BW1")) && dev.get_status("BW2"))
+		{
+			reperaturbetrieb();
+		}
+		while (!(dev.get_status("BW1")) && !(dev.get_status("BW2")))
+		{
+			ausgeschaltet();
+		}
+	}
+}
+
