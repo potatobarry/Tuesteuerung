@@ -24,6 +24,7 @@ DoorControl::~DoorControl()
 
 void DoorControl::automatik()
 {
+	door_if.DebugString("ENTER Automatik mode");
 	int s = 0;													   //Automatik boot variable
 	while (dev.get_status("BW1") && dev.get_status("BW2") == true) //Automatik Modus
 	{
@@ -56,7 +57,9 @@ void DoorControl::automatik()
 				}
 			}
 			dev.door_stop();
-			while (int i = 0 < 3000) // warte 3 sekunden, überprüfe jede 0,1 sek pb breakbedingungen erfüllt wurden
+			DoorInterface::get_instance().DebugString("ENTER WHILE SCHLEIFE");
+			int i = 0;
+			while (i < 30) // warte 3 sekunden, überprüfe jede 0,1 sek pb breakbedingungen erfüllt wurden
 			{
 				if ((!dev.get_status("BW1") || !dev.get_status("BW2") || dev.get_status("NTZ"))) //break bedingung moduswechsel
 				{
@@ -64,15 +67,20 @@ void DoorControl::automatik()
 					dev.lamp(0);
 					break;
 				}
+				DoorInterface::get_instance().DebugString("i'm alive" + std::to_string(i));
 				usleep(100 * 1000);
-				i = i + 100;
+				i++;
 			}
 		}
 
 		if (!(dev.get_status("NTA") || dev.get_status("LSH") || dev.get_status("LSV") || dev.get_status("BM") || az)) //Fahre zu
 		{
-			dev.door_close();
-			dev.lamp(1);
+			if (!dev.get_status("ELG"))
+			{
+				dev.door_close();
+				dev.lamp(1);
+			}
+
 			while (!(dev.get_status("NTA") || dev.get_status("LSH") || dev.get_status("LSV") || dev.get_status("BM") || dev.get_status("ELG") || !dev.get_status("BW1") || !dev.get_status("BW2")))
 			{
 				usleep(100 * 1000); //warte 100 ms
@@ -86,6 +94,7 @@ void DoorControl::automatik()
 
 void DoorControl::handbetrieb()
 {
+	DoorInterface::get_instance().DebugString("ENTER manual mode");
 	dev.door_stop();
 	dev.door_stop();
 	dev.lamp(0);
@@ -115,7 +124,7 @@ void DoorControl::handbetrieb()
 
 void DoorControl::reperaturbetrieb()
 {
-
+	DoorInterface::get_instance().DebugString("ENTER repair mode");
 	if (dev.get_status("NTA") || dev.get_status("LSV") || dev.get_status("LSH") || dev.get_status("BM") || !dev.get_status("ELO")) //fahre auf
 	{
 		while (dev.get_status("NTA") || dev.get_status("LSV") || dev.get_status("LSH") || dev.get_status("BM") || !dev.get_status("ELO"))
@@ -157,6 +166,8 @@ void DoorControl::reperaturbetrieb()
 
 void DoorControl::ausgeschaltet()
 {
+	dev.door_stop();
+	dev.lamp(0);
 	usleep(100 * 1000); //warte 100ms
 }
 
