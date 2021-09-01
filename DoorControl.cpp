@@ -95,23 +95,21 @@ void DoorControl::handbetrieb()
 {
 	DoorInterface::get_instance().DebugString("ENTER manual mode");
 	dev.door_stop();
-	dev.door_stop();
 	dev.lamp(0);
-	while (dev.get_status("NTA") == true && dev.get_status("NTG") == false && !dev.get_status("ELO")) //Befehl fahre auf (taste auf) und endlage offen nicht erreicht
+	while (dev.get_status("NTA") && !(dev.get_status("NTZ")) && !(dev.get_status("ELO"))) //Befehl fahre auf (taste auf) und endlage offen nicht erreicht
 	{
 		dev.door_open();
-		dev.lamp(1);
-		if (dev.get_status("BW1") && !dev.get_status("BW2") == false) //break bedingung moduswechsel
+		if ((dev.get_status("BW1") && !dev.get_status("BW2")) == false) //break bedingung moduswechsel
 		{
 			dev.door_stop();
 			dev.lamp(0);
 			break;
 		}
 	}
-	while (dev.get_status("NTA") == false && dev.get_status("NTG") == true && !dev.get_status("ELG")) //befehl fahre zu (taste zu gedrückt, endlage nicht erreicht)
+	while (!(dev.get_status("NTA")) && dev.get_status("NTZ")  && !(dev.get_status("ELG"))) //befehl fahre zu (taste zu gedrückt, endlage nicht erreicht)
 	{
+			DoorInterface::get_instance().DebugString("Manuel fahre zu");
 		dev.door_close();
-		dev.lamp(1);
 		if (dev.get_status("BW1") && !dev.get_status("BW2") == false) //break bedingung moduswechsel
 		{
 			dev.door_stop();
@@ -161,10 +159,12 @@ void DoorControl::reperaturbetrieb()
 		}
 		dev.door_stop();
 	}
+	}
 }
 
 void DoorControl::ausgeschaltet()
 {
+	DoorInterface::get_instance().DebugString("ENTER standby mode");
 	dev.door_stop();
 	dev.lamp(0);
 	usleep(100 * 1000); //warte 100ms
