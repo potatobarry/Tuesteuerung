@@ -106,9 +106,9 @@ void DoorControl::handbetrieb()
 			break;
 		}
 	}
-	while (!(dev.get_status("NTA")) && dev.get_status("NTZ")  && !(dev.get_status("ELG"))) //befehl fahre zu (taste zu gedrückt, endlage nicht erreicht)
+	while (!(dev.get_status("NTA")) && dev.get_status("NTZ") && !(dev.get_status("ELG"))) //befehl fahre zu (taste zu gedrückt, endlage nicht erreicht)
 	{
-			DoorInterface::get_instance().DebugString("Manuel fahre zu");
+		DoorInterface::get_instance().DebugString("Manuel fahre zu");
 		dev.door_close();
 		if (dev.get_status("BW1") && !dev.get_status("BW2") == false) //break bedingung moduswechsel
 		{
@@ -122,20 +122,21 @@ void DoorControl::handbetrieb()
 void DoorControl::reperaturbetrieb()
 {
 	DoorInterface::get_instance().DebugString("ENTER repair mode");
-	if (dev.get_status("NTA") || dev.get_status("LSV") || dev.get_status("LSH") || dev.get_status("BM") || !dev.get_status("ELO")) //fahre auf
+	if ((dev.get_status("NTA") || dev.get_status("LSV") || dev.get_status("LSH") || dev.get_status("BM")) && !dev.get_status("ELO")) //fahre auf
 	{
-		while (dev.get_status("NTA") || dev.get_status("LSV") || dev.get_status("LSH") || dev.get_status("BM") || !dev.get_status("ELO"))
+		while ((dev.get_status("NTA") || dev.get_status("LSV") || dev.get_status("LSH") || dev.get_status("BM")) && !dev.get_status("ELO"))
 		{
 			dev.door_open();
 			dev.lamp(1);
-			if (!dev.get_status("ELO") || dev.get_status("NTZ"))
+			if (dev.get_status("ELO") || dev.get_status("NTZ"))
 			{
 				break;
 			}
 		}
 		dev.door_stop(); //motor stop und licht aus
 
-		while (int i = 0 < 3000) // warte 3 sekunden, überprüfe jede 0,1 sek pb breakbedingungen erfüllt wurden
+		/*	int i = 0;
+		while (i < 3000) // warte 3 sekunden, überprüfe jede 0,1 sek pb breakbedingungen erfüllt wurden
 		{
 			if (dev.get_status("NTZ") || !(!dev.get_status("BW1") && dev.get_status("BW2"))) //break bedingung moduswechsel
 			{
@@ -146,19 +147,22 @@ void DoorControl::reperaturbetrieb()
 			usleep(100 * 1000);
 			i = i + 100;
 		}
+		*/
+		dev.lamp(0);
 	}
-	if (!(dev.get_status("NTA") || dev.get_status("LSV") || dev.get_status("LSH") || dev.get_status("BM") || !dev.get_status("ELG"))) //fahre zu
+	if ((!(dev.get_status("NTA") || dev.get_status("LSV") || dev.get_status("LSH") || dev.get_status("BM")) && !dev.get_status("ELG"))) //fahre zu
 	{
 		while (dev.get_status("NTZ"))
 		{
 			dev.door_close();
+			dev.lamp(1);
 			if (dev.get_status("ELG") || !(!dev.get_status("BW1") && dev.get_status("BW2")))
 			{
 				break;
 			}
 		}
 		dev.door_stop();
-	}
+		dev.lamp(0);
 	}
 }
 
@@ -198,4 +202,3 @@ void DoorControl::run()
 		}
 	}
 }
-
