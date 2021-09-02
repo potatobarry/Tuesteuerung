@@ -57,7 +57,7 @@ void DoorControl::automatik()
 				}
 			}
 			dev.door_stop();
-			DoorInterface::get_instance().DebugString("ENTER WHILE SCHLEIFE");
+
 			int i = 0;
 			while (i < 30) // warte 3 sekunden, überprüfe jede 0,1 sek pb breakbedingungen erfüllt wurden
 			{
@@ -124,8 +124,9 @@ void DoorControl::reperaturbetrieb()
 	DoorInterface::get_instance().DebugString("ENTER repair mode");
 	if ((dev.get_status("NTA") || dev.get_status("LSV") || dev.get_status("LSH") || dev.get_status("BM")) && !dev.get_status("ELO")) //fahre auf
 	{
-		while ((dev.get_status("NTA") || dev.get_status("LSV") || dev.get_status("LSH") || dev.get_status("BM")) && !(dev.get_status("ELO") /*|| dev.get_status("NTZ")*/ ))
+		while ((dev.get_status("NTA") || dev.get_status("LSV") || dev.get_status("LSH") || dev.get_status("BM")) && !(dev.get_status("ELO") /*|| dev.get_status("NTZ")*/))
 		{
+			DoorInterface::get_instance().DebugString("anfang auf");
 			dev.door_open();
 			dev.lamp(1);
 			if (dev.get_status("ELO") /*|| dev.get_status("NTZ") */)
@@ -134,6 +135,8 @@ void DoorControl::reperaturbetrieb()
 			}
 		}
 		dev.door_stop();
+		dev.lamp(0);
+		DoorInterface::get_instance().DebugString("ende auf");
 
 		/*	int i = 0;
 		while (i < 3000) // warte 3 sekunden, überprüfe jede 0,1 sek pb breakbedingungen erfüllt wurden
@@ -148,7 +151,6 @@ void DoorControl::reperaturbetrieb()
 			i = i + 100;
 		}
 		*/
-		dev.lamp(0);
 	}
 	if (dev.get_status("NTZ") && !((dev.get_status("NTA") || dev.get_status("LSV") || dev.get_status("LSH") || dev.get_status("BM")) && !dev.get_status("ELG"))) //fahre zu
 	{
