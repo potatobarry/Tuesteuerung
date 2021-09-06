@@ -14,12 +14,12 @@ bool Device::get_status(std::string sensor)
 	DoorInterface& door = DoorInterface::get_instance();
 
 	unsigned int port = device[sensor].port;
-	unsigned char pins;
+	unsigned char pins;		//will contain entire byte of pin information for port
 	bool status;
 	door.DIO_Read(port, &pins);
 
 	if (device[sensor].active_state) {
-		status = (pins >> device[sensor].pin) & 1;
+		status = (pins >> device[sensor].pin) & 1;		//gives us state of bit N = device[sensor].pin
 	}
 	else {
 		status = !((pins >> device[sensor].pin) & 1);	//flips boolean value for devices with active state = 0
@@ -42,11 +42,11 @@ void Device::set_status(std::string actor, bool status)
 	//converts string actor and bool status to appropriate pins byte
 	if (status)
 	{
-		actorpins |= 1 << device[actor].pin;
+		actorpins |= 1 << device[actor].pin;		//sets appropriate bit to 1
 	}
 	else
 	{
-		actorpins &= ~(1 << device[actor].pin);
+		actorpins &= ~(1 << device[actor].pin);		//sets appropriate bit to 0
 	}
 
 	door.DIO_Write(port, actorpins);
@@ -55,7 +55,7 @@ void Device::set_status(std::string actor, bool status)
 void Device::door_open()
 {
 	this->set_status("Y2", 0);
-	this->set_status("Y3", 0);
+	//this->set_status("Y3", 0);
 	this->set_status("Y1", 1);
 }
 
