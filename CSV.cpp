@@ -24,7 +24,7 @@ std::vector<std::string> CSV::parse_line(std::string line) {
 	//{
 	//	door.DebugString(str);
 	//}
-	return devprops;
+	return devprops; //devprops must contain 5 items (0 .. 4) or program most likely segfaults!
 }
 
 void CSV::read_file() {

@@ -76,7 +76,7 @@ class DoorInterface{
 		 * wenn "show_ui" wahr ist, dann nutze zum Starten des Programms in Eclipse:
 		 * "External Tools" -> run in xterm"
 		 */
-		DoorInterface(bool real_door = false, bool show_ui = true);
+		DoorInterface(bool real_door = true, bool show_ui = true);
 		DoorInterface(const DoorInterface&);
 		DoorInterface& operator = (const DoorInterface&);
 

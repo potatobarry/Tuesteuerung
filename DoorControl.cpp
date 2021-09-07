@@ -26,7 +26,7 @@ void DoorControl::automatik()
 {
 	door_if.DebugString("ENTER Automatik mode");
 	int s = 0;													   //Automatik boot variable
-	while (dev.get_status("BW1") && dev.get_status("BW2") == true) //Automatik Modus
+	while (dev.get_status("BW1") && dev.get_status("BW2") && !door_if.quit_doorcontrol_flag) //Automatik Modus
 	{
 		bool az = false; //Admin ZU
 
@@ -45,7 +45,7 @@ void DoorControl::automatik()
 
 		if (dev.get_status("NTA") || dev.get_status("LSH") || dev.get_status("LSV") || dev.get_status("BM")) //Wenn sensor ausgelöst; Lampe an, fahre auf
 		{
-			dev.lamp(1);											  //warnlampe an
+			dev.lamp(0);											  //warnlampe an
 			while (!(dev.get_status("ELO") || dev.get_status("NTZ"))) //fahre auf, bis endstop erreicht oder bis knopf gedrückt
 			{
 				dev.door_open();									   //fahre auf
@@ -67,7 +67,7 @@ void DoorControl::automatik()
 					dev.lamp(0);
 					break;
 				}
-				DoorInterface::get_instance().DebugString("i'm alive" + std::to_string(i));
+				//DoorInterface::get_instance().DebugString("i'm alive" + std::to_string(i));
 				usleep(100 * 1000);
 				i++;
 			}
@@ -189,16 +189,16 @@ void DoorControl::run()
 		automatik();
 
 		//Handbetrieb
-		while (dev.get_status("BW1") && !(dev.get_status("BW2"))) //Schleife für handbetrieb
+		while (dev.get_status("BW1") && !(dev.get_status("BW2")) && !door_if.quit_doorcontrol_flag) //Schleife für handbetrieb
 		{
 			handbetrieb();
 		}
 
-		while (!(dev.get_status("BW1")) && dev.get_status("BW2"))
+		while (!(dev.get_status("BW1")) && dev.get_status("BW2") && !door_if.quit_doorcontrol_flag)
 		{
 			reperaturbetrieb();
 		}
-		while (!(dev.get_status("BW1")) && !(dev.get_status("BW2")))
+		while (!(dev.get_status("BW1")) && !(dev.get_status("BW2")) && !door_if.quit_doorcontrol_flag)
 		{
 			ausgeschaltet();
 		}

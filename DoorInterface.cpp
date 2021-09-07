@@ -264,6 +264,8 @@ void DoorInterface::DIO_Read(const unsigned port, unsigned char *pins)
 	if(status) {
 		std::cerr << "error read port " << port << ": " << strerror(-status) << std::endl;
 	}
+	channels &= ~(0xFF << (port * 8));
+	channels |= *pins << (port * 8);
 }
 
 void DoorInterface::DIO_Write(const unsigned port, const unsigned char pins)
